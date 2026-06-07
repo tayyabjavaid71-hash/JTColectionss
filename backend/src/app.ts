@@ -1,5 +1,8 @@
 import express from 'express';
 import cors from 'cors';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import authRoutes from './routes/auth.routes.js';
 import orderRoutes from './routes/order.routes.js';
 import adminRoutes from './routes/admin.routes.js';
@@ -52,5 +55,18 @@ app.use("/api/admin/export", exportRoutes);
 app.use("/api/meta", metaEventRoutes);
 app.use("/api/tiktok", tiktokEventRoutes);
 app.use("/api/banners", bannerRoutes);
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const frontendDistPath = path.resolve(__dirname, '../../frontend/dist');
+
+if (fs.existsSync(frontendDistPath)) {
+  app.use(express.static(frontendDistPath));
+
+  // SPA fallback for non-API routes.
+  app.get(/^(?!\/api|\/health).*/, (_req, res) => {
+    res.sendFile(path.join(frontendDistPath, 'index.html'));
+  });
+}
 
 export default app;
