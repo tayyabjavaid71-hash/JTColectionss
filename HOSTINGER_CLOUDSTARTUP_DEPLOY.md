@@ -15,10 +15,14 @@ In Hostinger hPanel -> Websites -> Manage -> Node.js (Cloud Startup):
 - Repository: `ahmadkhan32/JTColection`
 - Branch: `main`
 - Root Directory: `backend`
-- Install Command: `npm install`
+- Install Command: `npm ci`
 - Build Command: `npm run build`
 - Start Command: `npm start`
 - Node Version: `22.x`
+- Entry file (if Hostinger asks): `dist/index.js`
+
+Why this avoids build errors:
+- `backend/.npmrc` includes `include=dev`, so TypeScript/compiler dependencies are installed even when `NODE_ENV=production` is set.
 
 Set backend environment variables in Hostinger (do not rely on git env files):
 - `SUPABASE_URL`
@@ -49,9 +53,12 @@ Create second app:
 - Repository: `ahmadkhan32/JTColection`
 - Branch: `main`
 - Root Directory: `frontend`
-- Install Command: `npm install`
+- Install Command: `npm ci`
 - Build Command: `npm run build`
 - Output Folder: `dist`
+
+Why this avoids build errors:
+- `frontend/.npmrc` includes `include=dev`, so Vite/TypeScript build tools are available during Hostinger build.
 
 Set frontend environment variables in Hostinger:
 - `VITE_SUPABASE_URL`
@@ -69,6 +76,18 @@ For both apps in Hostinger:
 - Enable automatic deployment on push to `main`
 
 After this, every `git push` to `main` will redeploy both apps.
+
+## 4.1) Auto deploy vs manual deploy (recommended choices)
+
+- Auto deploy + separate apps (recommended):
+	- Use two Hostinger apps (`backend` + `frontend`) and enable auto deploy on `main` for both.
+	- Best for reliability and easier debugging.
+- Manual deploy + separate apps:
+	- Trigger deploy manually from Hostinger after each push.
+	- Useful while testing environment variables the first time.
+- Deploy together as one app (not recommended for this repo):
+	- Possible, but harder to manage domains/scaling and can cause build confusion.
+	- Keep separate unless you have a strict one-app requirement.
 
 ## 5) Verify deployment
 
