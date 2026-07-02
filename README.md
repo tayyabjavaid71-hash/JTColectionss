@@ -1,31 +1,43 @@
 # JT Collections - Production E-Commerce
 
-A full-stack premium e-commerce solution built with React, TypeScript, Tailwind CSS, and Supabase.
+Full-stack e-commerce platform with React frontend, Express backend, and Supabase database/auth.
 
-## 🚀 Final Project Structure
+## Project Structure
 
 ```
-ecommerce-app/
-│
-├── frontend/ (React + TypeScript)
-├── supabase/ (Backend functions)
-├── database/ (SQL schema)
-├── .env
-└── README.md
+JT Colection/
+├── frontend/   # React + Vite + TypeScript app
+├── backend/    # Express + TypeScript API
+├── database/   # SQL schema and migrations
+├── supabase/   # Supabase configs and migrations
+└── package.json
 ```
 
-## 🛠️ Tech Stack
--   **Frontend**: React 19, Vite, Framer Motion, Tailwind CSS
--   **Backend**: Supabase (PostgreSQL, Auth, Edge Functions)
--   **Payment**: Razorpay Integrated
+## Tech Stack
+- Frontend: React, Vite, TypeScript, Tailwind CSS, Framer Motion
+- Backend: Node.js, Express, TypeScript
+- Database/Auth: Supabase (PostgreSQL + Auth)
 
-## ⚙️ Setup
-1.  **Frontend**: `cd client && npm install && npm run dev`
-2.  **Environment**: Add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` to `frontend/.env`.
-3.  **Database**: Run the SQL in `database/schema.sql` within your Supabase SQL Editor.
+## Local Development
 
-## ✅ Features
--   Full Customer Storefront
--   Complete Admin Dashboard (CRUD)
--   Animated UI with Framer Motion
--   Responsive Design (sm, md, lg, xl)
+```bash
+# install root helper dependencies
+npm install
+
+# run frontend + backend together
+npm run dev
+
+# production builds
+npm run build
+```
+
+## Deployment
+
+- Hostinger Cloud Startup (recommended): see `HOSTINGER_CLOUDSTARTUP_DEPLOY.md`
+- Backend build output: `backend/dist`
+- Frontend build output: `frontend/dist`
+
+## Notes
+
+- Production secrets should be added in hosting platform environment variables.
+- Do not commit real secret values in `.env` files.
