@@ -80,3 +80,24 @@ After this, every `git push` to `main` will redeploy both apps.
 - Keep production secrets only in Hostinger environment variables.
 - Do not commit `.env.production` secrets to GitHub.
 - Rotate any credentials that were exposed previously.
+
+## 7) If jtcolections.com shows 403 Forbidden
+
+Most common reason: deploying repository root to `public_html` where no site `index.html` exists.
+In this project, the real website files are generated in `frontend/dist`.
+
+Fix options:
+
+- Preferred for static hosting panel: deploy only `frontend/dist` content to `public_html`.
+- If using GitHub Actions, this repository includes `.github/workflows/deploy-frontend-hostinger.yml` which builds frontend and uploads `frontend/dist` to `/public_html/` over FTP.
+- Apache SPA fallback is included in `frontend/public/.htaccess` so client-side routes do not return 404/403 after refresh.
+
+Required GitHub repository secrets for the workflow:
+- `HOSTINGER_FTP_HOST`
+- `HOSTINGER_FTP_USERNAME`
+- `HOSTINGER_FTP_PASSWORD`
+- `VITE_SUPABASE_URL`
+- `VITE_SUPABASE_ANON_KEY`
+- `VITE_API_URL`
+- `VITE_META_PIXEL_ID`
+- `VITE_TIKTOK_PIXEL_ID`
