@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "JT Collections - E-commerce order management system",
   "type": "module",
+  "engines": {
+    "node": ">=22 <23"
+  },
   "scripts": {
     "frontend": "cd frontend && npm run dev",
     "backend": "cd backend && npm run dev",
