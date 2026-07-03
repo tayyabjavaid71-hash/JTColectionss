@@ -12,6 +12,8 @@ build/
 .next/
 out/
 *.lcov
+hostinger-package/
+hostinger-package.zip
 
 # Environment Variables (CRITICAL)
 .env

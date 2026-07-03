@@ -12,6 +12,7 @@
     "dev": "concurrently --names \"BACKEND,FRONTEND\" --prefix-colors \"cyan,magenta\" \"npm run backend\" \"npm run frontend\"",
     "prebuild": "npm --prefix frontend ci && npm --prefix backend ci",
     "build": "cd frontend && npm run build && cd ../backend && npm run build",
+    "build:hostinger": "npm run build && node scripts/build-hostinger-package.mjs",
     "start": "npm --prefix backend start",
     "preview": "concurrently \"cd frontend && npm run preview\" \"cd backend && npm start\""
   },
