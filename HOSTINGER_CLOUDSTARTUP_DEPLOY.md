@@ -7,19 +7,22 @@ This project is ready to deploy from one GitHub repository with two apps:
 ## 1) Push repository to GitHub
 
 Use your existing repository:
-- `origin`: `https://github.com/ahmadkhan32/JTColection.git`
+- Full monorepo: `https://github.com/tayyabjavaid71-hash/JTColectionss.git`
+- Backend only: `https://github.com/tayyabjavaid71-hash/backend.git`
+- Frontend only: `https://github.com/tayyabjavaid71-hash/frontend.git`
 
 ## 2) Create Backend app in Hostinger
 
 In Hostinger hPanel -> Websites -> Manage -> Node.js (Cloud Startup):
 - Repository: `ahmadkhan32/JTColection`
+- Repository: `tayyabjavaid71-hash/backend` (recommended) OR `tayyabjavaid71-hash/JTColectionss` with root `backend`
 - Branch: `main`
 - Root Directory: `backend`
 - Install Command: `npm ci`
 - Build Command: `npm run build`
 - Start Command: `npm start`
-- Node Version: `22.x`
-- Entry file (if Hostinger asks): `dist/index.js`
+- Node Version: `20.x` or `22.x`
+- Entry file (if Hostinger asks): `server.js`
 
 Why this avoids build errors:
 - `backend/.npmrc` includes `include=dev`, so TypeScript/compiler dependencies are installed even when `NODE_ENV=production` is set.
@@ -51,6 +54,7 @@ Recommended domain mapping:
 
 Create second app:
 - Repository: `ahmadkhan32/JTColection`
+- Repository: `tayyabjavaid71-hash/frontend` (recommended) OR `tayyabjavaid71-hash/JTColectionss` with root `frontend`
 - Branch: `main`
 - Root Directory: `frontend`
 - Install Command: `npm ci`

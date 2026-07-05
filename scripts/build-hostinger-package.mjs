@@ -35,7 +35,7 @@ fs.mkdirSync(outputBackend, { recursive: true });
 copyDirContents(frontendDist, outputPublicHtml);
 copyDirContents(backendDist, path.join(outputBackend, 'dist'));
 
-for (const filename of ['package.json', 'package-lock.json', '.npmrc', '.env.example']) {
+for (const filename of ['package.json', 'package-lock.json', '.npmrc', '.env.example', 'server.js']) {
   const sourceFile = path.join(root, 'backend', filename);
   if (fs.existsSync(sourceFile)) {
     fs.copyFileSync(sourceFile, path.join(outputBackend, filename));
@@ -49,8 +49,8 @@ const readme = [
   'backend/: deploy this folder as Node.js app (not in public_html).',
   '',
   'Backend app settings:',
-  '- Node version: 22.x',
-  '- Entry file: dist/index.js',
+  '- Node version: 20.x or 22.x',
+  '- Entry file: server.js',
   '- Install command: npm ci',
   '- Build command: npm run build',
   '- Start command: npm start',
