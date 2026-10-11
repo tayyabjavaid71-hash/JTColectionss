@@ -12,6 +12,7 @@ build/
 .next/
 out/
 *.lcov
+*.zip
 
 # Environment Variables (CRITICAL)
 .env
