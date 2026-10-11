@@ -1,4 +1,7 @@
 import 'dotenv/config';
+import path from 'path';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
 import express, { Request, Response, NextFunction } from 'express';
 import cors, { CorsOptions } from 'cors';
 import authRoutes from './routes/auth.routes.js';
@@ -14,6 +17,9 @@ import exportRoutes from './routes/export.routes.js';
 import metaEventRoutes from './routes/metaEvent.routes.js';
 import tiktokEventRoutes from './routes/tiktokEvent.routes.js';
 import bannerRoutes from './routes/banner.routes.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -120,9 +126,37 @@ app.use('/api/meta', metaEventRoutes);
 app.use('/api/tiktok', tiktokEventRoutes);
 app.use('/api/banners', bannerRoutes);
 
-// 404 handler
-app.use((_req, res) => {
-  res.status(404).json({ success: false, message: 'Route not found' });
+// Look for frontend build in multiple candidate locations
+const candidatePaths = [
+  path.resolve(__dirname, '../public'),
+  path.resolve(__dirname, './public'),
+  path.resolve(__dirname, '../../frontend/dist'),
+  path.resolve(process.cwd(), 'public'),
+  path.resolve(process.cwd(), 'frontend/dist'),
+  path.resolve(process.cwd(), '../frontend/dist'),
+  path.resolve(process.cwd(), 'dist'),
+];
+
+const clientDistPath = candidatePaths.find(
+  (dir) => fs.existsSync(dir) && fs.existsSync(path.join(dir, 'index.html'))
+);
+
+if (clientDistPath) {
+  console.log(`[Frontend] Serving static files from: ${clientDistPath}`);
+  app.use(express.static(clientDistPath));
+
+  // SPA fallback for all non-API GET requests (e.g. /login, /admin/dashboard)
+  app.get('*', (req: Request, res: Response, next: NextFunction) => {
+    if (req.path.startsWith('/api') || req.path === '/health') {
+      return next();
+    }
+    return res.sendFile(path.join(clientDistPath, 'index.html'));
+  });
+}
+
+// 404 handler for unmatched API requests
+app.use((req: Request, res: Response) => {
+  res.status(404).json({ success: false, message: `Route not found: ${req.method} ${req.originalUrl}` });
 });
 
 // Global error handler (handles CORS errors gracefully)
