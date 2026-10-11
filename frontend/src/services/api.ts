@@ -6,10 +6,15 @@ const getApiBase = (): string => {
     return envUrl.endsWith('/api') ? envUrl : `${envUrl.replace(/\/$/, '')}/api`;
   }
 
-  // Relative /api works seamlessly on:
-  // - Hostinger Node.js full-stack (same origin https://jtcolections.com/api)
-  // - Local dev (proxied by Vite to localhost:3001)
-  // - Vercel (rewritten to backend by vercel.json)
+  if (typeof window !== 'undefined') {
+    const host = window.location.hostname;
+    // Hostinger static frontend -> calls Vercel backend API
+    if (host.includes('jtcolections.com') || host.includes('jtcollections.com')) {
+      return 'https://jt-collection-backend-ahmadkhan32.vercel.app/api';
+    }
+  }
+
+  // Local dev: use Vite proxy (relative /api)
   return '/api';
 };
 
